@@ -6,9 +6,18 @@
 
     <groupId>com.micstudent.com</groupId>
     <artifactId>micstudent-parent</artifactId>
+    <packaging>pom</packaging>
     <name>micstudent</name>
     <url>http://maven.apache.org</url>
+    <modules>
+        <module>micunits</module>
+    </modules>
     <version>1.0-SNAPSHOT</version>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.2.RELEASE</version>
+    </parent>
 
     <properties>
         <java.version>1.8</java.version>
@@ -28,6 +37,12 @@
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-redis</artifactId>
                 <version>${spring.redis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.0</version>
+                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
