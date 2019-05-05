@@ -6,8 +6,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import redis.clients.jedis.HostAndPort;
+import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @ClassName JredisConfig
@@ -26,6 +31,21 @@ public class JredisConfig{
 
     @Value("${spring.redis.port}")
     private int port;
+
+    @Value("${spring.redis.port1}")
+    private int port1;
+
+    @Value("${spring.redis.port2}")
+    private int port2;
+
+    @Value("${spring.redis.port3}")
+    private int port3;
+
+    @Value("${spring.redis.port4}")
+    private int port4;
+
+    @Value("${spring.redis.port5}")
+    private int port5;
 
     @Value("${spring.redis.password}")
     private String password;
@@ -61,6 +81,25 @@ public class JredisConfig{
         jedisPoolConfig.setJmxEnabled(true);
         JedisPool jedisPool = new JedisPool(jedisPoolConfig, host, port, timeout, password);
         return jedisPool;
+    }
+    @Bean
+    public JedisCluster redisCluster() throws Exception{
+        Set<HostAndPort> set=new HashSet<>();
+        set.add(new HostAndPort(host,port));
+        set.add(new HostAndPort(host,port1));
+        set.add(new HostAndPort(host,port2));
+        set.add(new HostAndPort(host,port3));
+        set.add(new HostAndPort(host,port4));
+        set.add(new HostAndPort(host,port5));
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setMaxIdle(maxIdle);
+        jedisPoolConfig.setMaxWaitMillis(maxWait);
+        // 连接耗尽时是否阻塞, false报异常,ture阻塞直到超时, 默认true
+        jedisPoolConfig.setBlockWhenExhausted(exhausted);
+        // 是否启用pool的jmx管理功能, 默认true
+        jedisPoolConfig.setJmxEnabled(true);
+        JedisCluster jedisCluster=new JedisCluster(set,jedisPoolConfig);
+        return jedisCluster;
     }
 
 }

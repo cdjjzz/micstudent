@@ -1,6 +1,8 @@
 package com.micstudent;
 
+import com.micstudent.utils.JredisClusterUtils;
 import com.micstudent.utils.JredisConfig;
+import com.micstudent.utils.JredisUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -19,15 +21,18 @@ public class Application  implements InitializingBean {
     private JredisConfig jredisConfig;
     @Autowired
     private JedisPool jedisPool;
+
+    @Autowired
+    private JredisUtils jredisUtils;
+
+    @Autowired
+    private JredisClusterUtils jredisClusterUtils;
     public static void main(String args[]){
         SpringApplication.run(Application.class);
     }
 
     public void afterPropertiesSet() throws Exception {
-        System.out.println(1);
-        System.out.println(jredisConfig.getHost());
-        System.out.println(jedisPool.getMaxBorrowWaitTimeMillis());
-        System.out.println(jedisPool.getResource());
-        System.out.println(jedisPool.getResource().set("google","www.google.com"));
+        jredisUtils.set("apple","www.apple.com",0);
+        jredisClusterUtils.set("qq12222","www.qq.com");
     }
 }
