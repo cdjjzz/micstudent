@@ -1,4 +1,4 @@
-package com.micstudent.utils;
+package com.micstudent.utils.redis;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -6,6 +6,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisPool;
@@ -106,5 +112,32 @@ public class JredisConfig{
         JedisCluster jedisCluster=new JedisCluster(set,jedisPoolConfig);
         return jedisCluster;
     }
+    @Bean
+    public RedisTemplate redisTemplate() throws Exception{
+        RedisStandaloneConfiguration redisStandaloneConfiguration
+                =new RedisStandaloneConfiguration();
+        redisStandaloneConfiguration.setHostName(host);
+        redisStandaloneConfiguration.setPort(port);
+        JedisConnectionFactory jedisConnectionFactory=
+                new JedisConnectionFactory(redisStandaloneConfiguration);
+        RedisTemplate redisTemplate=new RedisTemplate();
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
+        redisTemplate.setConnectionFactory(jedisConnectionFactory);
+        return redisTemplate;
+    }
+    @Bean
+    public StringRedisTemplate stringRedisTemplate() throws Exception{
+        RedisStandaloneConfiguration redisStandaloneConfiguration
+                =new RedisStandaloneConfiguration();
+        redisStandaloneConfiguration.setHostName(host);
+        redisStandaloneConfiguration.setPort(port);
+        JedisConnectionFactory jedisConnectionFactory=
+                new JedisConnectionFactory(redisStandaloneConfiguration);
+        StringRedisTemplate redisTemplate=new StringRedisTemplate();
+        redisTemplate.setConnectionFactory(jedisConnectionFactory);
+        return redisTemplate;
+    }
+
 
 }

@@ -1,4 +1,4 @@
-package com.micstudent.utils;
+package com.micstudent.utils.redis;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * @ClassName JredisUtils
- * @Description Jredis 帮助类
+ * @Description  TODO Jredis 帮助类
  * @Author pet-lsf
  * @Date 2019/4/30 11:20
  **/
